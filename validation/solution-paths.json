@@ -1,0 +1,125 @@
+[
+  [
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "create",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "create",
+      "at": [
+        4,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    }
+  ],
+  [
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "erase",
+      "at": [
+        3,
+        3
+      ]
+    },
+    {
+      "kind": "create",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "erase",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "kind": "create",
+      "at": [
+        4,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    }
+  ],
+  [
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "create",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "erase",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "kind": "create",
+      "at": [
+        4,
+        4
+      ]
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    },
+    {
+      "kind": "walk"
+    }
+  ]
+]

@@ -1,0 +1,40 @@
+# Operating-system metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+Desktop.ini
+
+# Editor-local settings and temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# JavaScript dependencies and coverage output
+node_modules/
+coverage/
+.nyc_output/
+
+# Local secrets and configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs and local scratch files
+*.log
+.cache/
+/work/
+/tmp/
+
+# Keep site/, docs/, tools/, validation/, and archives/ tracked.

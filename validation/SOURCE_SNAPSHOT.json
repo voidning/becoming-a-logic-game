@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-10",
+  "main_version": "3 levels",
+  "files": [
+    {
+      "file": "site/puzzle.js",
+      "sha256": "e4cd0a9a8bc7dcd4dc91c3efa3479ac1753099a71c1335ad9f0f0744409b9e19",
+      "bytes": 3079
+    },
+    {
+      "file": "site/index.html",
+      "sha256": "ca9449eb40072f3f722c3b0726af4f94b6bf6028b3369df6fc81744288a922ef",
+      "bytes": 9131
+    },
+    {
+      "file": "site/app.js",
+      "sha256": "0918b4ff785f7e4655282dde34c944a22661229d4daf5f9d7922ad719fc0087b",
+      "bytes": 7878
+    },
+    {
+      "file": "archives/02-two-levels/puzzle.js",
+      "sha256": "9b90cb924e2b67720744e2ab3381b04062205c4c57598df48a7d16ecf105d8f3",
+      "bytes": 2268
+    },
+    {
+      "file": "archives/02-two-levels/index.html",
+      "sha256": "58060c608dafbfa04655763ec57d71221a775d3ad18e6ddab5e351a1c4576095",
+      "bytes": 13994
+    },
+    {
+      "file": "archives/01-blank-experiment/index.html",
+      "sha256": "eff7c22fafffba2a9a15c5507bfc60746c92b734699d58a0bf05e3c2efc14873",
+      "bytes": 9695
+    }
+  ]
+}

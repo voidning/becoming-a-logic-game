@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f6f3">
+  <meta name="description" content="三道相连的谜题。每一次发现，成为下一次行动的能力。">
+  <title>有 · 无 · 变 — 三道谜题</title>
+  <style>
+    :root{color-scheme:light;--paper:#f6f6f3;--ink:#242427;--muted:#727276;--fine:#d0d0cd;--cell:calc(var(--board)/7);--board:min(calc(100vw - 12px),560px)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;-webkit-tap-highlight-color:transparent}
+    button{font:inherit;color:inherit;touch-action:manipulation}button:focus-visible{outline:2px solid #707074;outline-offset:5px}button:disabled{cursor:default}
+    main{min-height:100svh;display:flex;flex-direction:column;align-items:center;padding: max(24px,env(safe-area-inset-top)) 0 max(24px,env(safe-area-inset-bottom))}
+    header{width:100%;max-width:1120px;padding:0 28px;display:flex;justify-content:space-between;align-items:center;height:32px;flex-shrink:0}
+    #chapter{font-size:14px;letter-spacing:.16em;color:var(--muted);font-variant-numeric:tabular-nums}.restart{border:0;background:none;padding:8px;cursor:pointer;font-size:14px;color:var(--muted)}
+    .play{display:flex;flex:1;flex-direction:column;justify-content:center;align-items:center;padding:22px 0 14px;min-height:360px}
+    #objective{font-size:16px;font-weight:400;letter-spacing:.07em;margin:0 0 10px;min-height:25px;color:#5d5d62;text-align:center}
+    .dot-word{display:inline-block;width:9px;height:9px;background:var(--ink);border-radius:50%;margin:0 6px 1px}.goal-word{display:inline-block;width:13px;height:13px;border:1px solid var(--ink);border-radius:50%;margin:0 6px -1px}
+    #board{width:var(--board);height:calc(var(--cell)*5);position:relative;isolation:isolate;transition:opacity .45s ease,transform .45s ease;user-select:none;-webkit-user-select:none}
+    #board.leaving{opacity:0;transform:translateY(-12px)}
+    .tile{position:absolute;width:var(--cell);height:var(--cell);left:calc(var(--x)*var(--cell));top:calc(var(--y)*var(--cell));border:0;background:none;padding:0;cursor:pointer;z-index:2}
+    .tile .piece{position:absolute;left:19%;right:19%;top:12%;bottom:26%;border-radius:2px;background:var(--ink);transform:scale(.96);transition:transform .2s ease,background .2s ease,opacity .2s ease}
+    .tile.bridge .piece{left:0;right:0;top:9%;bottom:auto;height:12%;border-radius:0;transform:scaleX(1)}
+    .tile.empty .piece{background:transparent;outline:1px dashed #b5b5b2;outline-offset:-1px;transform:scale(.83)}
+    .tile.empty.bridge .piece{height:15%;top:7.5%;transform:scaleX(.83)}
+    .tile.wall.empty .piece{opacity:.22}.tile.wall.empty:not(:hover):not(:focus-visible) .piece{outline-color:transparent}
+    .tile .mark{position:absolute;inset:0;display:grid;place-content:center;opacity:0;color:var(--ink);font-size:21px;transition:opacity .15s;pointer-events:none}.tile.bridge .mark{transform:translateY(-23%)}
+    @media(hover:hover){.tile:hover .piece{transform:scale(1.03)}.tile.bridge:hover .piece{transform:scaleX(.92)}.tile:hover .mark{opacity:.55}.tile.filled.wall:hover .mark{color:var(--paper)}.tile.filled.bridge:hover .mark{color:var(--ink)}}
+    .floor{position:absolute;left:calc(var(--x)*var(--cell));top:calc(var(--cell)*4.09);width:var(--cell);height:calc(var(--cell)*.12);background:var(--ink);opacity:.23;z-index:0}
+    #actor{position:absolute;left:calc(var(--cell)*.5);top:calc(var(--cell)*3.7);width:calc(var(--cell)*.27);height:calc(var(--cell)*.27);border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);z-index:4;transition:left .55s cubic-bezier(.45,0,.3,1),opacity .4s,transform .4s;pointer-events:none}
+    #actor.waiting{animation:breathe 2.4s ease-in-out infinite}
+    #actor.arrived{transform:translate(-50%,-50%) scale(.5);opacity:0}
+    #goal{position:absolute;left:calc(var(--cell)*6.5);top:calc(var(--cell)*3.7);width:calc(var(--cell)*.48);height:calc(var(--cell)*.48);border:1.5px solid var(--ink);border-radius:50%;transform:translate(-50%,-50%);z-index:3;transition:transform .6s,border-color .6s,background .6s}
+    #goal.complete{transform:translate(-50%,-50%) scale(1.3);background:var(--ink)}
+    #reward{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;pointer-events:none;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;font-family:'Songti SC','STSong',serif;font-size:48px;font-weight:400;letter-spacing:.1em;padding-bottom:calc(var(--cell)*.6)}
+    #reward.show{opacity:1;transform:translateY(0)}
+    #feedback{min-height:27px;max-width:90vw;margin:0;text-align:center;font-size:14px;color:var(--muted);line-height:1.8;transition:opacity .2s}
+    footer{display:flex;flex-direction:column;align-items:center;gap:14px;min-height:130px;flex-shrink:0}
+    .tools{display:flex;gap:8px;align-items:center}.tool{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 15px;min-width:88px;min-height:49px;border:1px solid transparent;border-radius:28px;background:transparent;cursor:pointer;transition:border-color .3s,opacity .3s,background .3s}
+    .tool[aria-pressed=true]{border-color:#c1c1bf;background:#ececea}.tool:disabled{opacity:.27}.symbol{display:block;width:15px;height:15px;border-radius:50%;background:var(--ink)}.symbol.hollow{background:transparent;border:1.5px solid var(--ink)}
+    .tool-name{font-family:'Songti SC','STSong',serif;font-size:18px}.tool.new{animation:unlock 1.8s ease-out}
+    #supply{display:flex;gap:8px;align-items:center;height:20px;color:var(--muted);font-size:13px}.unit{width:6px;height:6px;background:var(--ink);border-radius:1px}.empty-unit{background:transparent;border:1px solid #bababa}
+    #again{display:none;border:1px solid #bfbfbc;background:transparent;border-radius:22px;padding:10px 22px;min-height:44px;cursor:pointer}#again.show{display:block}
+    .sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    @keyframes breathe{50%{transform:translate(-50%,-50%) scale(.88)}}@keyframes unlock{0%,35%{box-shadow:0 0 0 6px #24242718}100%{box-shadow:0 0 0 20px transparent}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media(max-height:620px){.play{padding-top:10px}footer{min-height:105px}header{height:25px}}
+    .chapters{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}#chapter{max-width:170px;border:0;background:transparent;font:inherit;color:inherit;padding:7px 3px;min-height:44px;cursor:pointer;letter-spacing:.04em}#chapter-total{font-size:13px;letter-spacing:.08em}.stock-label{margin-right:5px;font-size:13px}
+    .symbol.change{background:none;width:20px;height:20px;display:grid;place-content:center;font-size:22px;font-family:serif;line-height:1}
+    .tile.selected{outline:1px solid var(--ink);outline-offset:-6px;border-radius:6px}.tile.selected .piece{opacity:.6}
+    #board.leaving #actor{transition:none}
+  </style>
+</head>
+<body>
+  <main>
+    <header><div class="chapters"><select id="chapter" aria-label="选择已到达的关卡"></select><span id="chapter-total">/ 03</span></div><button class="restart" id="restart" type="button" aria-label="重新开始当前关卡">重来</button></header>
+    <section class="play" aria-label="解谜区域">
+      <h1 id="objective">让<span class="dot-word" aria-label="实心圆"></span>抵达<span class="goal-word" aria-label="空心圆"></span></h1>
+      <div id="board" role="group" aria-label="通路中的虚线空位可以操作">
+        <div id="terrain"></div><div id="goal" aria-hidden="true"></div><div id="actor" aria-hidden="true"></div><div id="reward" aria-hidden="true"></div>
+      </div>
+      <p id="feedback" aria-live="polite">点按虚线空位</p>
+    </section>
+    <footer>
+      <div class="tools" role="group" aria-label="已获得的能力">
+        <button class="tool" type="button" id="create" aria-label="有：放入一份材料" aria-pressed="true"><span class="symbol" aria-hidden="true"></span><span class="tool-name">有</span></button>
+        <button class="tool" type="button" id="erase" aria-label="尚未获得另一种能力" aria-pressed="false" disabled><span class="symbol hollow" aria-hidden="true"></span><span class="tool-name" id="erase-name">?</span></button>
+        <button class="tool" type="button" id="shift" aria-label="尚未获得另一种能力" aria-pressed="false" disabled><span class="symbol change" aria-hidden="true">↔</span><span class="tool-name" id="shift-name">?</span></button>
+      </div>
+      <div id="supply" aria-label="可用材料"></div>
+      <button id="again" type="button">再走一遍</button>
+    </footer>
+    <span id="reader" class="sr-only" aria-live="polite"></span>
+  </main>
+  <script src="puzzle.js?v=three"></script>
+  <script src="app.js?v=three"></script>
+</body>
+</html>
