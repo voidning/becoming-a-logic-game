@@ -8,11 +8,15 @@ The first completion unlocks removal. The final completion reveals the name “�
 
 ## Play locally
 
+Open [`becoming.html`](becoming.html) directly for the portable single-file build. It contains the same three-level game as `site/` and needs no server, build step, dependencies, or network access.
+
+To run the source version through a local server:
+
 ```sh
 python3 tools/serve.py --open
 ```
 
-Use `--level 3` to open the third level. Valid levels are 1–3. Keep the terminal running; Ctrl+C stops the server. On macOS, double-click `启动试玩.command`. Alternatively open `site/index.html`. No build, dependencies, or network access are needed.
+Use `--level 3` to open the third level. Valid levels are 1–3. Keep the terminal running; Ctrl+C stops the server. On macOS, double-click `启动试玩.command`. The editable source remains in `site/`.
 
 Choose placement with 1 or removal with 2, then click a slot or material. The dot walks automatically. Its current support cannot be removed. Escape restarts the current level. Progress stores level numbers, not unfinished layouts.
 
@@ -23,7 +27,10 @@ Read [START_HERE](START_HERE.md), [gameplay](docs/GAMEPLAY.md), [technical notes
 ```sh
 node tools/check-rules.cjs
 node tools/check-controller.cjs
+python3 tools/build-standalone.py --check
 python3 tools/check-integrity.py
 ```
 
 The rule check covers 91 reachable states. The mocked controller check covers the three-level journey, final reward, completion, saved progress, and replay. These checks are not real-browser E2E or evidence of philosophical understanding. See [validation](validation/RESULTS.md).
+
+After changing `site/index.html`, `site/puzzle.js`, or `site/app.js`, rebuild the portable file with `python3 tools/build-standalone.py`.

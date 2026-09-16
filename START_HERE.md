@@ -4,6 +4,8 @@
 
 ## 启动
 
+直接打开根目录的 `becoming.html` 可试玩便携单文件版。
+
 双击 `启动试玩.command`，或在本包目录运行：
 
 ```sh
@@ -24,8 +26,9 @@ python3 tools/serve.py --open
 ## 文件地图
 
 - `site/`：HTML、规则引擎、控制器。
+- `becoming.html`：由 `site/` 生成的便携单文件试玩版。
 - `docs/`：三关玩法、技术说明、设计方法。
-- `tools/`：启动、规则检查、模拟控制器检查、完整性检查。
+- `tools/`：启动、单文件生成、规则检查、模拟控制器检查、完整性检查。
 - `validation/`：当前三关的验证、解法和校验记录。
 - `archives/`：空白交互实验和两关原型，均无其他关卡。
 
@@ -34,6 +37,7 @@ python3 tools/serve.py --open
 ```sh
 node tools/check-rules.cjs
 node tools/check-controller.cjs
+python3 tools/build-standalone.py --check
 python3 tools/check-integrity.py
 ```
 

@@ -8,13 +8,15 @@
 
 ## 试玩
 
-双击 `启动试玩.command`，或运行：
+直接打开根目录的 [`becoming.html`](becoming.html) 即可试玩单文件版。它与 `site/` 中的三关源码保持一致，不需要服务器、构建依赖或联网。
+
+需要通过本地服务器运行源码版时，可双击 `启动试玩.command`，或运行：
 
 ```sh
 python3 tools/serve.py --open
 ```
 
-可加 `--level 3` 直接打开第三关，只支持 1–3；保持终端运行，Ctrl+C 停止。也可直接打开 `site/index.html`。不需要构建、安装依赖或联网。
+可加 `--level 3` 直接打开第三关，只支持 1–3；保持终端运行，Ctrl+C 停止。可编辑源码仍位于 `site/`。
 
 按 1 选“有”，按 2 选“无”，再点按场景中的空位或材料。Esc／重来重置当前关，菜单重玩已到达关卡。角色自动走，脚下支撑不能回收。进度只保存关卡编号，不保存中途布局。
 
@@ -32,7 +34,10 @@ python3 tools/serve.py --open
 ```sh
 node tools/check-rules.cjs
 node tools/check-controller.cjs
+python3 tools/build-standalone.py --check
 python3 tools/check-integrity.py
 ```
 
 规则检查覆盖三关 91 个可达状态；模拟控制器检查覆盖连续完成、奖励、结束、存档和重玩。它们不是真实浏览器端到端或玩家理解验证。见 [验证记录](validation/RESULTS.md)。
+
+修改 `site/index.html`、`site/puzzle.js` 或 `site/app.js` 后，运行 `python3 tools/build-standalone.py` 重新生成单文件版。

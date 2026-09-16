@@ -7,6 +7,8 @@
 - `site/index.html`：页面、样式、按钮、选关菜单。加载 `puzzle.js?v=three` 和 `app.js?v=three`。
 - `site/puzzle.js`：三关数据和纯规则；浏览器全局 BeingPuzzle，也支持 Node require。
 - `site/app.js`：点击、自动前进、转场、奖励、存档。
+- `becoming.html`：由上述三个文件生成的便携单文件试玩版，不直接编辑。
+- `tools/build-standalone.py`：生成或检查 `becoming.html`；源码变更后运行一次生成命令。
 
 ## 状态与接口
 
@@ -33,6 +35,7 @@
 python3 tools/serve.py --level 3 --open
 node tools/check-rules.cjs
 node tools/check-controller.cjs
+python3 tools/build-standalone.py --check
 python3 tools/check-integrity.py
 ```
 
